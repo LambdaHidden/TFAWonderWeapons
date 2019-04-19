@@ -20,13 +20,6 @@ SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.Weight				= 30			-- This controls how "good" the weapon is for autopickup.
 SWEP.Type			= "Wonder Weapon"
 
-SWEP.NZWonderWeapon = false
-
-game.AddAmmoType({
-	name = "Skulls",
-
-})
-
 --[[WEAPON HANDLING]]--
 
 --Firing related
@@ -39,11 +32,33 @@ SWEP.Primary.Automatic			= false					-- Automatic/Semi Auto
 SWEP.Primary.RPM				= 300				-- This is in Rounds Per Minute / RPM
 SWEP.FiresUnderwater = false
 
-SWEP.IronInSound = nil --Sound to play when ironsighting in?  nil for default
-SWEP.IronOutSound = nil --Sound to play when ironsighting out?  nil for default
+-- nZombies Stuff
+SWEP.NZWonderWeapon		= true	-- Is this a Wonder-Weapon? If true, only one player can have it at a time. Cheats aren't stopped, though.
+--SWEP.NZRePaPText		= "your text here"	-- When RePaPing, what should be shown? Example: Press E to your text here for 2000 points.
+SWEP.NZPaPName				= "The Sweeper"
+--SWEP.NZPaPReplacement 	= "tfa_cso_pchan"	-- If Pack-a-Punched, replace this gun with the entity class shown here.
+SWEP.NZPreventBox		= false	-- If true, this gun won't be placed in random boxes GENERATED. Users can still place it in manually.
+SWEP.NZTotalBlackList	= false	-- if true, this gun can't be placed in the box, even manually, and can't be bought off a wall, even if placed manually. Only code can give this gun.
+SWEP.Primary.MaxAmmo = 60
 
-SWEP.CanBeSilenced = false --Can we silence?  Requires animations.
-SWEP.Silenced = false --Silenced by default?
+-- Max Ammo function
+function SWEP:NZMaxAmmo()
+
+	local ammo_type = self:GetPrimaryAmmoType() or self.Primary.Ammo
+
+    if SERVER then
+        self.Owner:SetAmmo( self.Primary.MaxAmmo, ammo_type )
+    end
+end
+
+function SWEP:OnPaP()
+self.Ispackapunched = 1
+self.Primary.Damage = self.Primary.Damage*2
+self.Primary.ClipSize = 2
+self.Primary.MaxAmmo = 120
+self:ClearStatCache()
+return true
+end
 
 -- Selective Fire Stuff
 
@@ -57,22 +72,22 @@ SWEP.FireModeName = nil --Change to a text value to override it
 
 SWEP.Primary.ClipSize			= 1				-- This is the size of a clip
 SWEP.Primary.DefaultClip			= 61					-- This is the number of bullets the gun gives you, counting a clip as defined directly above.
-SWEP.Primary.Ammo			= "Skulls"					-- What kind of ammo.  Options, besides custom, include pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, and AirboatGun.
+SWEP.Primary.Ammo			= "buckshot"					-- What kind of ammo.  Options, besides custom, include pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, and AirboatGun.
 SWEP.Primary.AmmoConsumption = 1 --Ammo consumed per shot
 --Pistol, buckshot, and slam like to ricochet. Use AirboatGun for a light metal peircing shotgun pellets
 
 SWEP.DisableChambering = true --Disable round-in-the-chamber
 
 --Recoil Related
-SWEP.Primary.KickUp            = 0.79                -- This is the maximum upwards recoil (rise)
-SWEP.Primary.KickDown            = 0.23                    -- This is the maximum downwards recoil (skeet)
+SWEP.Primary.KickUp            = 0.83                -- This is the maximum upwards recoil (rise)
+SWEP.Primary.KickDown            = 0                    -- This is the maximum downwards recoil (skeet)
 SWEP.Primary.KickHorizontal            = 0                   -- This is the maximum sideways recoil (no real term)
 SWEP.Primary.StaticRecoilFactor = 0.5     --Amount of recoil to directly apply to EyeAngles.  Enter what fraction or percentage (in decimal form) you want.  This is also affected by a convar that defaults to 0.5.
 
 --Firing Cone Related
 
-SWEP.Primary.Spread        = 0.07            --This is hip-fire acuracy.  Less is more (1 is horribly awful, .0001 is close to perfect)
-SWEP.Primary.IronAccuracy = 0.05    -- Ironsight accuracy, should be the same for shotguns
+SWEP.Primary.Spread        = 0.05            --This is hip-fire acuracy.  Less is more (1 is horribly awful, .0001 is close to perfect)
+SWEP.Primary.IronAccuracy = 0.015    -- Ironsight accuracy, should be the same for shotguns
 
 --Unless you can do this manually, autodetect it.  If you decide to manually do these, uncomment this block and remove this line.
 --SWEP.Primary.SpreadMultiplierMax = 2.5 --How far the spread can expand when you shoot.
@@ -80,24 +95,24 @@ SWEP.Primary.IronAccuracy = 0.05    -- Ironsight accuracy, should be the same fo
 --SWEP.Primary.SpreadRecovery = 3 --How much the spread recovers, per second.
 
 --Range Related
-SWEP.Primary.Range = -1 -- The distance the bullet can travel in source units.  Set to -1 to autodetect based on damage/rpm.
-SWEP.Primary.RangeFalloff = -1 -- The percentage of the range the bullet damage starts to fall off at.  Set to 0.8, for example, to start falling off after 80% of the range.
+SWEP.Primary.Range = 125 * 40 * 8 / 3 -- The distance the bullet can travel in source units.  Set to -1 to autodetect based on damage/rpm.
+SWEP.Primary.RangeFalloff = 0.5 -- The percentage of the range the bullet damage starts to fall off at.  Set to 0.8, for example, to start falling off after 80% of the range.
 
 
 --Penetration Related
 
-SWEP.MaxPenetrationCounter=4 --The maximum number of ricochets.  To prevent stack overflows.
+SWEP.MaxPenetrationCounter= 4 --The maximum number of ricochets.  To prevent stack overflows.
 
 --Misc
-SWEP.IronRecoilMultiplier=0.5 --Multiply recoil by this factor when we're in ironsights.  This is proportional, not inversely.
-SWEP.CrouchRecoilMultiplier=0.65  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
-SWEP.JumpRecoilMultiplier=1.3  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
-SWEP.WallRecoilMultiplier=1.1  --Multiply recoil by this factor when we're changing state e.g. not completely ironsighted.  This is proportional, not inversely.
-SWEP.ChangeStateRecoilMultiplier=1.3  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
-SWEP.CrouchAccuracyMultiplier=0.5--Less is more.  Accuracy * 0.5 = Twice as accurate, Accuracy * 0.1 = Ten times as accurate
-SWEP.ChangeStateAccuracyMultiplier=1.5 --Less is more.  A change of state is when we're in the progress of doing something, like crouching or ironsighting.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
-SWEP.JumpAccuracyMultiplier=2--Less is more.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
-SWEP.WalkAccuracyMultiplier=1.35--Less is more.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
+SWEP.IronRecoilMultiplier= 0.5 --Multiply recoil by this factor when we're in ironsights.  This is proportional, not inversely.
+SWEP.CrouchRecoilMultiplier= 0.65  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
+SWEP.JumpRecoilMultiplier= 1.3  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
+SWEP.WallRecoilMultiplier= 1.1  --Multiply recoil by this factor when we're changing state e.g. not completely ironsighted.  This is proportional, not inversely.
+SWEP.ChangeStateRecoilMultiplier= 1.3  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
+SWEP.CrouchAccuracyMultiplier= 0.5--Less is more.  Accuracy * 0.5 = Twice as accurate, Accuracy * 0.1 = Ten times as accurate
+SWEP.ChangeStateAccuracyMultiplier= 1.5 --Less is more.  A change of state is when we're in the progress of doing something, like crouching or ironsighting.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
+SWEP.JumpAccuracyMultiplier= 2--Less is more.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
+SWEP.WalkAccuracyMultiplier= 1.35--Less is more.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
 SWEP.IronSightTime = 0.3 --The time to enter ironsights/exit it.
 SWEP.NearWallTime = 0.25 --The time to pull up  your weapon or put it back down
 SWEP.ToCrouchTime = 0.05 --The time it takes to enter crouching state
@@ -459,13 +474,6 @@ SWEP.CanSilencerDetachAnimate=false
 SWEP.ShouldDrawAmmoHUD=false--THIS IS PROCEDURALLY CHANGED AND SHOULD NOT BE TWEAKED.  BASE DEPENDENT VALUE.  DO NOT CHANGE OR THINGS MAY BREAK.  NO USE TO YOU.
 SWEP.DefaultFOV=90 --BASE DEPENDENT VALUE.  DO NOT CHANGE OR THINGS MAY BREAK.  NO USE TO YOU.
 
---Disable secondary crap
-
-SWEP.Secondary.ClipSize			= 0					-- Size of a clip
-SWEP.Secondary.DefaultClip			= 0					-- Default ammo to give...
-SWEP.Secondary.Automatic			= false					-- Automatic/Semi Auto
-SWEP.Secondary.Ammo			= "none" -- Self explanitory, ammo type.
-
 --Convar support
 
 SWEP.ConDamageMultiplier = 1
@@ -473,30 +481,3 @@ SWEP.ConDamageMultiplier = 1
 SWEP.Base = "tfa_gun_base"
 
 DEFINE_BASECLASS( SWEP.Base )
-
-SWEP.NZPaPName = "The Sweeper"
-
--- Nzombies stuff
-
-SWEP.DisableChambering = true
-SWEP.Primary.MaxAmmo = 60
-
--- Max Ammo function
-
-function SWEP:NZMaxAmmo()
-
-	local ammo_type = self:GetPrimaryAmmoType() or self.Primary.Ammo
-
-    if SERVER then
-        self.Owner:SetAmmo( self.Primary.MaxAmmo, ammo_type )
-    end
-end
-
--- PaP Function
-function SWEP:OnPaP()
-self.Primary.Damage = self.Primary.Damage*2
-self.Primary.ClipSize = 2
-self.Primary.MaxAmmo = 120
-self:ClearStatCache()
-return true
-end
