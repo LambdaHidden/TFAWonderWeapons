@@ -19,10 +19,6 @@ SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.Weight				= 30			-- This controls how "good" the weapon is for autopickup.
 SWEP.Type			= "Wonder Weapon"
-SWEP.Ispackapunched = 0
-
-SWEP.NZWonderWeapon = false
-SWEP.NZPaPName = "Porter's Mark II Ray Gun"
 
 game.AddAmmoType({
 	name = "Atomic Cold Batteries",
@@ -42,9 +38,6 @@ SWEP.Primary.Sound 			= Sound("Weapon_Raygun2.Shoot")				-- This is the sound of
 SWEP.Primary.SilencedSound 			= nil				-- This is the sound of the weapon, when silenced.
 SWEP.Primary.PenetrationMultiplier = 1 --Change the amount of something this gun can penetrate through
 SWEP.Primary.Damage		= 1000					-- Damage, in standard damage points.
-SWEP.Primary.Damage_Displayed = 115 -- This is in Rounds Per Minute / RPM
-SWEP.Primary.HullSize = 0 --Big bullets, increase this value.  They increase the hull size of the hitscan bullet.
-SWEP.DamageType = nil--See DMG enum.  This might be DMG_SHOCK, DMG_BURN, DMG_BULLET, etc.
 SWEP.Primary.NumShots	= 1 --The number of shots the weapon fires.  SWEP.Shotgun is NOT required for this to be >1.
 SWEP.Primary.Automatic			= true				-- Automatic/Semi Auto
 SWEP.Primary.RPM                = 600				-- This is in Rounds Per Minute / RPM
@@ -52,21 +45,45 @@ SWEP.Primary.RPM_Displayed = 500 -- This is in Rounds Per Minute / RPM
 SWEP.FiresUnderwater = false
 SWEP.Primary.Knockback = 50
 
---SWEP.TracerName = "raygunmkii_muzzle"
---SWEP.TracerPCF = true
---SWEP.TracerCount = 1
+-- nZombies Stuff
+SWEP.NZWonderWeapon		= true	-- Is this a Wonder-Weapon? If true, only one player can have it at a time. Cheats aren't stopped, though.
+--SWEP.NZRePaPText		= "your text here"	-- When RePaPing, what should be shown? Example: Press E to your text here for 2000 points.
+SWEP.NZPaPName				= "Porter's Mark II Ray Gun"
+--SWEP.NZPaPReplacement 	= ""	-- If Pack-a-Punched, replace this gun with the entity class shown here.
+SWEP.NZPreventBox		= false	-- If true, this gun won't be placed in random boxes GENERATED. Users can still place it in manually.
+SWEP.NZTotalBlackList	= false	-- if true, this gun can't be placed in the box, even manually, and can't be bought off a wall, even if placed manually. Only code can give this gun.
 
---SWEP.MuzzleFlashEffect = "raygunmkii_muzzle"
---SWEP.MuzzleFlashEnabled = true
---SWEP.MuzzleAttachment = "1"
---SWEP.MuzzleAttachmentRaw = 1
-SWEP.SmokeParticle = ""
+SWEP.Primary.MaxAmmo = 162
+-- Max Ammo function
+function SWEP:NZMaxAmmo()
 
-SWEP.IronInSound = nil --Sound to play when ironsighting in?  nil for default
-SWEP.IronOutSound = nil --Sound to play when ironsighting out?  nil for default
+	local ammo_type = self:GetPrimaryAmmoType() or self.Primary.Ammo
 
-SWEP.CanBeSilenced = false --Can we silence?  Requires animations.
-SWEP.Silenced = false --Silenced by default?
+    if SERVER then
+        self.Owner:SetAmmo( self.Primary.MaxAmmo, ammo_type )
+    end
+end
+
+function SWEP:OnPaP()
+self.Ispackapunched = 1
+self.Primary.Damage = self.Primary.Damage*2
+self.Primary.ClipSize = 42
+self.Primary.MaxAmmo = 201
+self.MuzzleFlashEffect = "mark2muzzleflash_pap"
+self.TracerName = "mark2tracer_pap"
+self:ClearStatCache()
+return true
+end
+
+function SWEP:PreDrawViewModel( vm )
+if self.Ispackapunched == 1 then
+		self.Owner:GetViewModel():SetSubMaterial(0, "models/weapons/common/bo1_pap_camo_c.vmt")
+		self.Owner:GetViewModel():SetSubMaterial(1, "models/weapons/raygun2/mtl_t6_wpn_zmb_raygun2_glow_upg.vmt")
+else
+		self.Owner:GetViewModel():SetSubMaterial(0, nil)
+		self.Owner:GetViewModel():SetSubMaterial(1, nil)
+end
+end
 
 -- Selective Fire Stuff
 
@@ -87,14 +104,14 @@ SWEP.Primary.AmmoConsumption = 1 --Ammo consumed per shot
 SWEP.DisableChambering = true --Disable round-in-the-chamber
 
 --Recoil Related
-SWEP.Primary.KickUp			= 0.24				-- This is the maximum upwards recoil (rise)
-SWEP.Primary.KickDown			= 0.17				-- This is the maximum downwards recoil (skeet)
-SWEP.Primary.KickHorizontal			= 0.15					-- This is the maximum sideways recoil (no real term)
+SWEP.Primary.KickUp			= 0.34				-- This is the maximum upwards recoil (rise)
+SWEP.Primary.KickDown			= 0.0				-- This is the maximum downwards recoil (skeet)
+SWEP.Primary.KickHorizontal			= 0.1					-- This is the maximum sideways recoil (no real term)
 SWEP.Primary.StaticRecoilFactor = 0 	--Amount of recoil to directly apply to EyeAngles.  Enter what fraction or percentage (in decimal form) you want.  This is also affected by a convar that defaults to 0.5.
 --Firing Cone Related
 
-SWEP.Primary.Spread		= .001	-- Define from-the-hip accuracy 1 is terrible, .0001 is exact)
-SWEP.Primary.IronAccuracy = .0001 -- Ironsight accuracy, should be the same for shotguns
+SWEP.Primary.Spread		= 0.03	-- Define from-the-hip accuracy 1 is terrible, .0001 is exact)
+SWEP.Primary.IronAccuracy = 0.01 -- Ironsight accuracy, should be the same for shotguns
 
 --Unless you can do this manually, autodetect it.  If you decide to manually do these, uncomment this block and remove this line.
 --SWEP.Primary.SpreadMultiplierMax = 2.5 --How far the spread can expand when you shoot.
@@ -102,24 +119,24 @@ SWEP.Primary.IronAccuracy = .0001 -- Ironsight accuracy, should be the same for 
 --SWEP.Primary.SpreadRecovery = 3 --How much the spread recovers, per second.
 
 --Range Related
-SWEP.Primary.Range = -1 -- The distance the bullet can travel in source units.  Set to -1 to autodetect based on damage/rpm.
-SWEP.Primary.RangeFalloff = -1 -- The percentage of the range the bullet damage starts to fall off at.  Set to 0.8, for example, to start falling off after 80% of the range.
+SWEP.Primary.Range = 985 * 40 * 8 / 3 -- The distance the bullet can travel in source units.  Set to -1 to autodetect based on damage/rpm.
+SWEP.Primary.RangeFalloff = 0 -- The percentage of the range the bullet damage starts to fall off at.  Set to 0.8, for example, to start falling off after 80% of the range.
 
 
 --Penetration Related
 
-SWEP.MaxPenetrationCounter= 40 --The maximum number of ricochets.  To prevent stack overflows.
+SWEP.MaxPenetrationCounter= 4 --The maximum number of ricochets.  To prevent stack overflows.
 
 --Misc
-SWEP.IronRecoilMultiplier=0.5 --Multiply recoil by this factor when we're in ironsights.  This is proportional, not inversely.
-SWEP.CrouchRecoilMultiplier=0.65  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
-SWEP.JumpRecoilMultiplier=1.3  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
-SWEP.WallRecoilMultiplier=1.1  --Multiply recoil by this factor when we're changing state e.g. not completely ironsighted.  This is proportional, not inversely.
-SWEP.ChangeStateRecoilMultiplier=1.3  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
-SWEP.CrouchAccuracyMultiplier=0.5--Less is more.  Accuracy * 0.5 = Twice as accurate, Accuracy * 0.1 = Ten times as accurate
-SWEP.ChangeStateAccuracyMultiplier=1.5 --Less is more.  A change of state is when we're in the progress of doing something, like crouching or ironsighting.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
-SWEP.JumpAccuracyMultiplier=2--Less is more.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
-SWEP.WalkAccuracyMultiplier=1.35--Less is more.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
+SWEP.IronRecoilMultiplier= 0.5 --Multiply recoil by this factor when we're in ironsights.  This is proportional, not inversely.
+SWEP.CrouchRecoilMultiplier= 0.65  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
+SWEP.JumpRecoilMultiplier= 1.3  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
+SWEP.WallRecoilMultiplier= 1.1  --Multiply recoil by this factor when we're changing state e.g. not completely ironsighted.  This is proportional, not inversely.
+SWEP.ChangeStateRecoilMultiplier= 1.3  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
+SWEP.CrouchAccuracyMultiplier= 0.5--Less is more.  Accuracy * 0.5 = Twice as accurate, Accuracy * 0.1 = Ten times as accurate
+SWEP.ChangeStateAccuracyMultiplier= 1.5 --Less is more.  A change of state is when we're in the progress of doing something, like crouching or ironsighting.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
+SWEP.JumpAccuracyMultiplier= 2--Less is more.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
+SWEP.WalkAccuracyMultiplier= 1.35--Less is more.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
 SWEP.IronSightTime = 0.3 --The time to enter ironsights/exit it.
 SWEP.NearWallTime = 0.25 --The time to pull up  your weapon or put it back down
 SWEP.ToCrouchTime = 0.05 --The time it takes to enter crouching state
@@ -489,45 +506,3 @@ SWEP.ConDamageMultiplier = 1
 SWEP.Base = "tfa_gun_base"
 
 DEFINE_BASECLASS( SWEP.Base )
-
--- Nzombies stuff
-
-SWEP.DisableChambering = true
-SWEP.Primary.MaxAmmo = 162
-
--- Max Ammo function
-
-function SWEP:NZMaxAmmo()
-
-	local ammo_type = self:GetPrimaryAmmoType() or self.Primary.Ammo
-
-    if SERVER then
-        self.Owner:SetAmmo( self.Primary.MaxAmmo, ammo_type )
-    end
-end
-
--- PaP Function
-function SWEP:OnPaP()
-self.Ispackapunched = 1
-self.Primary.Damage = self.Primary.Damage*2
-self.Primary.ClipSize = 42
-self.Primary.MaxAmmo = 201
-
-self.MuzzleFlashEffect = "mark2muzzleflash_pap"
-self.TracerName = "mark2tracer_pap"
-
-self:ClearStatCache()
-return true
-end
-
-function SWEP:PreDrawViewModel( vm )
-if self.Ispackapunched == 1 then
-		self.Owner:GetViewModel():SetSubMaterial(0, "models/weapons/common/bo1_pap_camo_c.vmt")
-		self.Owner:GetViewModel():SetSubMaterial(1, "models/weapons/raygun2/mtl_t6_wpn_zmb_raygun2_glow_upg.vmt")
-else
-		self.Owner:GetViewModel():SetSubMaterial(0, nil)
-		self.Owner:GetViewModel():SetSubMaterial(1, nil)
-end
-end
-
-
