@@ -7,7 +7,7 @@ ENT.AdminSpawnable 	= false
 sound.Add( {
 	name = "wg_explode",
 	volume = 1.0,
-	level = 100,
+	level = 80,
 	pitch = {100, 100},
 	sound = "weapons/zapwavegun/microwave_flux_r.wav"
 } )
@@ -33,7 +33,7 @@ function ENT:Initialize()
 	eff:SetParent(self)
 	eff:Spawn()
 	eff:Activate()
-	timer.Create("effstart", 0.1, 1, function()
+	timer.Create("effstart", 0.02, 1, function()
 		if IsValid(eff) then
 			eff:Fire("Start")
 		end
