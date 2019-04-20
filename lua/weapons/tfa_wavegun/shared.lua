@@ -246,7 +246,7 @@ function SWEP:FireRocket()
 			orb1:SetAngles((self.Owner:GetEyeTrace().HitPos - pos):Angle())
 			orb1.Owner = own
 			if self.Ispackapunched == 1 then
-				orb1.TrailPCF = "rgun1_trail_child1_pap"
+				orb1.TrailPCF = "zgun1_trail"
 				orb1.CollidePCF = "rgun1_impact_pap"
 			else
 				orb1.TrailPCF = "rgun1_trail_child1_pap"
@@ -279,7 +279,7 @@ function SWEP:FireRocket2()
 			orb1:SetAngles((self.Owner:GetEyeTrace().HitPos - pos):Angle())
 			orb1.Owner = own
 			if self.Ispackapunched == 1 then
-				orb1.TrailPCF = "rgun1_trail_child1_pap"
+				orb1.TrailPCF = "zgun1_trail"
 				orb1.CollidePCF = "rgun1_impact_pap"
 			else
 				orb1.TrailPCF = "rgun1_trail_child1_pap"
