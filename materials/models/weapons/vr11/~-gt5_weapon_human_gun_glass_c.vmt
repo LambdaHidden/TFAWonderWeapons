@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/weapons/vr11/~-gt5_weapon_human_gun_glass_c"
+	"$translucent" "1"
+}

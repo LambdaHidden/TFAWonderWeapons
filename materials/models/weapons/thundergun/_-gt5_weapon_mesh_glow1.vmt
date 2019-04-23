@@ -1,0 +1,14 @@
+VertexLitGeneric
+{
+$baseTexture "models\weapons\thundergun\_-gt5_weapon_mesh_glow"
+$selfillum 1
+
+"Proxies"
+{
+"AnimatedTexture"
+{
+"animatedTextureVar" "$basetexture"
+"animatedTextureFrameNumVar" "$frame"
+"animatedTextureFrameRate" "25"
+}
+}

@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$baseTexture "models\weapons\thundergun\_-gmtl_weapon_acog_lens_c"
+"$translucent" "1"
+}

@@ -1,0 +1,21 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/weapons/raygun2/~-gmtl_t6_wpn_zmb_raygun2_col3"
+	"$bumpmap" "models/weapons/raygun2t/raygun2_n2"
+	"$nocull" 1	
+	"$alphatest"					"1"
+	"$alphatestreference"			"0.30"
+	"$allowalphatocoverage"			"1"
+	"$phong" "1"
+	"$phongexponent"				"1"
+	"$phongboost"					"0"
+
+	"$phongalbedotint" 1
+	"$phongexponenttexture" "models\weapons\jetgun\common\exponent"
+
+	"$phongfresnelranges"			"[5 7 8]"
+	
+	//"$envmap" "env_cubemap"
+	"$envmaptint" "[0.35 0.35 0.35]"
+	"$normalmapalphaenvmapmask" "1"
+}

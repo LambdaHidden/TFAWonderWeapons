@@ -1,0 +1,13 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/weapons/wavegun/_-gt5_weapon_zom_moon_raygun_rear_c"
+	
+	"$color" "[.2 .2 .2]"
+
+	"$phong" "1"
+	"$phongexponent" "128"
+	"$phongboost"	"32"
+	"$phongalbedoboost" 	"-1"
+	"$phongfresnelranges"	"[.03 .6 .9]"
+	"$basemapalphaphongmask" "1"	
+}

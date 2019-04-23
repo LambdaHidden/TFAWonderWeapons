@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$baseTexture "models\weapons\scavenger\~-gmtl_t5_weapon_zom_sniper_lens_c"
+$translucent "1"
+}

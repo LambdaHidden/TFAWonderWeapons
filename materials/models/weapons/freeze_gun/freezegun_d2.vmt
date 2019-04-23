@@ -1,0 +1,22 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models\weapons\freeze_gun\freezegun_d"
+	"$bumpmap" "models\weapons\freeze_gun\freezegun_n"
+	"$nocull"	"1"
+	"$detail" "models/weapons/common/bo1_pap_camo"
+
+
+
+
+	"$normalmapalphaenvmapmask" "1"
+	"$envmaptint" "[.1 .1 .1]"
+	"$envmapcontrast" ".4"
+	
+	"$phong" 	"1"
+	"$phongexponent" 	"24"
+	"$phongboost"	 "3"
+	"$phongfresnelranges" "[0.25 0.75  0.3]"
+	"$phongexponenttexture" 	"models\weapons\freeze_gun\freezegun_m"	
+                //"$phongwarptexture"		"models\weapons\freeze_gun\freezegun_m"	
+                "$lightwarptexture" "models\common\clothes_wrp"	
+}

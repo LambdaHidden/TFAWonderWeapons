@@ -1,0 +1,17 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/weapons/jetgun/jetgun/jetgun_s"
+	"$bumpmap" "models/weapons/jetgun/jetgun/jetgun_n"
+	"$nocull" 1
+                "$color2""[0.0 0.0 0.0]"
+                "$additive""1"	
+	
+	"$phong" "1"
+	"$phongexponent"				"10"
+	"$phongboost"					"10"
+
+	"$phongalbedotint" 1
+	"$phongexponenttexture" "models\weapons\jetgun\common\exponent"
+
+	"$phongfresnelranges"			"[1 1.05 1.25]"
+}

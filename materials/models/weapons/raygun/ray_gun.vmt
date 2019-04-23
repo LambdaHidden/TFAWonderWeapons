@@ -1,0 +1,13 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/weapons/raygun/ray_gun"
+	"$surfaceprop" "Default"
+	"$bumpmap" "models/weapons/raygun/ray_gun_n"
+	"$phong" "1"
+	
+	$phongexponent	5
+	$phongexponenttexture	"models/weapons/raygun/ray_gun_s"
+	$phongboost				1
+	$phongfresnelranges		"[0 0.5 1]"
+}
+

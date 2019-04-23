@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$baseTexture "models\weapons\thundergun\_-gt5_weapon_mesh_c"
+$translucent 1
+}

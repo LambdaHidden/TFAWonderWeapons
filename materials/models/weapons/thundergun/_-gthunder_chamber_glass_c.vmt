@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$baseTexture "models\weapons\thundergun\_-gthunder_chamber_glass_c"
+"$translucent" "1"
+}
