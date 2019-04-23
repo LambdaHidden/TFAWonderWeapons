@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/tesla_gun/lightning_chamber_glass_c"
+	"$translucent" 1
+}

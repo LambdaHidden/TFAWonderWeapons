@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/tesla_gun/tesla_c"
+	"$bumpmap" "models/tesla_gun/tesla_n"
+
+	"$basemapalphaphongmask" "1"
+	"$phong" "1"
+	"$phongexponent" "10"
+	"$phongboost" "1"
+	"$phongfresnelranges" "[0.3 1 7]"
+}

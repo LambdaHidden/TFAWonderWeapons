@@ -1,0 +1,5 @@
+"UnlitGeneric"
+{
+	"$basetexture" "models/wunderwaffe/lightning_chamber_main_c"
+	"$translucent" "1"
+}

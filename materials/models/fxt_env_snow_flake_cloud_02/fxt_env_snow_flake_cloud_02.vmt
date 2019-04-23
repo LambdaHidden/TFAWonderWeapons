@@ -1,0 +1,8 @@
+"SpriteCard"
+{
+	"$color"				"[1 1 1]"
+	"$baseTexture"			"models/fxt_env_snow_flake_cloud_02/fxt_env_snow_flake_cloud_02"
+	"$selfIllum"			0
+	"$translucent"			1
+	"$alpha"				1
+}

@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/tesla_gun/viewmodel_usa_marine_c"
+	"$bumpmap" "models/tesla_gun/viewmodel_usa_marine_n"
+
+	"$basemapalphaphongmask" "1"
+	"$phong" "1"
+}

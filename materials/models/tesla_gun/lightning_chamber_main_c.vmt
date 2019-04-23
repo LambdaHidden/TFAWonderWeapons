@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/tesla_gun/lightning_chamber_main_c"
+	"$translucent" 1
+	"$additive" "1"
+	"$bumpmap" "models/tesla_gun/lightning_chamber_main_n"
+
+	"$phong" "5"
+	"$phongexponent" "5"
+	"$phongboost" "0.1"
+	"$phongfresnelranges" "[0.3 1 7]"
+}

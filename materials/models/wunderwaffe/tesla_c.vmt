@@ -1,0 +1,11 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/wunderwaffe/tesla_c"
+                "$bumpmap" "models/wunderwaffe/tesla_c_normal"
+                "$phong" "1"
+                "$phongexponent" "33"
+                "$phongboost" "6"
+                "$phongfresnelranges" "[.05 .025 1]"
+                "$alphatest" "1"
+                "$nocull" "1"
+}

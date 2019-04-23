@@ -1,0 +1,7 @@
+"SpriteCard"
+{
+"$baseTexture" "models/electric_arc/electric_arc"
+"$translucent" 1
+"$additive" 1
+//"$overbrightfactor" 1
+}

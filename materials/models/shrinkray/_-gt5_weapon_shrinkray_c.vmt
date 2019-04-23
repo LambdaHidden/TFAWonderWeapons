@@ -1,0 +1,6 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/shrinkray/_-gt5_weapon_shrinkray_c"
+	"$surfaceprop2" "Default"
+	"$halflambert" "1"
+}
