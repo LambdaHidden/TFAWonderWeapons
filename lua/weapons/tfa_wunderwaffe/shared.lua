@@ -310,12 +310,6 @@ end
 	end
 end
 
-function SWEP:PreDrawViewModel( vm )
-
-	self.Owner:GetViewModel():SetSubMaterial(4, nil)
-
-end
-
 function SWEP:PrimaryAttack( old )
 	if !self:CanPrimaryAttack() then return	end	
 	local own = self.Owner
@@ -360,20 +354,20 @@ end
 
 -- PaP Function
 function SWEP:OnPaP()
-self.Ispackapunched = 1
-self.Primary.ClipSize = 6
-self.Primary.MaxAmmo = 30
-self:ClearStatCache()
-return true
+	self.Ispackapunched = 1
+	self.Primary.ClipSize = 6
+	self.Primary.MaxAmmo = 30
+	self:ClearStatCache()
+	return true
 end
 
 SWEP.Ispackapunched = 0
 function SWEP:PreDrawViewModel( vm )
-if self.Ispackapunched == 1 then
-		self.Owner:GetViewModel():SetSubMaterial(0, "models/wunderwaffe/wawpap.vmt")
-		self.Owner:GetViewModel():SetSubMaterial(4, "models/wunderwaffe/wawpap.vmt")
-else
-		self.Owner:GetViewModel():SetSubMaterial(0, nil)
-		self.Owner:GetViewModel():SetSubMaterial(4, nil)
-end
+	if self.Ispackapunched == 1 then
+		vm:SetSubMaterial(0, "models/weapons/common/wawpap.vmt")
+		vm:SetSubMaterial(4, "models/weapons/common/wawpap.vmt")
+	else
+		vm:SetSubMaterial(0, nil)
+		vm:SetSubMaterial(4, nil)
+	end
 end
