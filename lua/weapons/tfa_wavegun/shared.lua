@@ -202,10 +202,19 @@ function SWEP:SecondaryAttack()
 
 end
 
+SWEP.OldClip1 = 16
 function SWEP:FireRocket()
 	local vm = self.Owner:GetViewModel()
 	local own = self.Owner
-	self.ShouldAmmoFix = true
+	if self:GetNWString("dw_state") == "dw" then
+		if self:Ammo1() == 0 then
+			self.ReserveEmpty = true
+		end
+		if self:Clip1() == 1 and self.ReserveEmpty then
+			self.PrimaryEmpty = true
+		end
+		self.OldClip1 = self:Clip1() - 1
+	end
 	if SERVER then
 		if self:GetNWString("dw_state") == "combined" then
 			if self:Clip2() == 0 then timer.Simple(0.2, function() self:Reload() end) return end
@@ -273,6 +282,13 @@ function SWEP:FireRocket2()
 	local pos = self.Owner:GetShootPos() + self.Owner:GetForward()*30 + self.Owner:GetUp()* -8 + self.Owner:GetRight()* 16
 	local ply = player
 	if self:GetNWString("dw_state") == "dw" then
+		if self:Ammo1() == 0 then
+			self.ReserveEmpty = true
+		end
+		if self:Clip1() == 1 and self.ReserveEmpty then
+			self.PrimaryEmpty = true
+		end
+		self.OldClip1 = self:Clip1() - 1
 		if SERVER then
 			local orb1 = ents.Create("obj_wgun_proj")
 			orb1:SetPos(pos)
@@ -361,16 +377,6 @@ function SWEP:ChooseHolsterAnim()
 		return self:SendViewModelSeq(tanim)
 	end
 end
-
-/*
-function SWEP:ChooseSprintAnim()
-    if self:GetNWString("dw_state") == "combined" then
-		return self:PlayAnimation(self:GetStat("SprintAnimationSilenced.loop"))
-    else
-        return self:PlayAnimation(self:GetStat("SprintAnimation.loop"))
-    end
-end
-*/
 
 function SWEP:ChooseSprintAnim()
 	if not self:VMIV() then return end
@@ -484,9 +490,6 @@ function SWEP:ToggleDWCombine()
 				self.NZPaPName = "Porter's X2 Zap Gun Dual Wield"
 			end
 			
-			if self.PrimaryEmpty1 == 1 then
-				self:SetClip1( self:Clip1()+1 )
-			end
 		end
 		self.CanChangeStates = false
 		timer.Simple(1.82,function() self.CanChangeStates = true self:SetNWBool("changing",false) end)
@@ -494,7 +497,6 @@ function SWEP:ToggleDWCombine()
 end
 
 
-SWEP.ShouldAmmoFix = false
 function SWEP:Think2()
 	BaseClass.Think2(self)
 	if (self.Owner:KeyDown(IN_USE) and self.Owner:KeyDown(IN_RELOAD)) then 
@@ -507,28 +509,23 @@ function SWEP:Think2()
 		self:SetHoldType("duel")
 	end
 	
-	
-	if self.ShouldAmmoFix then
-		if self:Ammo1() == 0 and self:Ammo2() > 0 and self:GetNWString("dw_state") == "combined" then
-			self.Owner:SetAmmo( 1, "Tesla Bulbs" )
-			if self:Clip1() == 0 then
-				self:SetClip1( 1 )
-				self.PrimaryEmpty = 1
-			else
-				self:SetClip1( self:Clip1()-1 )
-			end
-			self.PrimaryEmpty1 = 1
+	if self.PrimaryEmpty then
+		if self:GetNWString("dw_state") == "combined" then
+			self:SetClip1( 1 )
+		else
+			self:SetClip1( 0 )
 		end
-		if self.PrimaryEmpty1 == 1 and self:GetNWString("dw_state") == "dw" then
-			if self.PrimaryEmpty == 1 then
-				self:SetClip1( 0 )
-				self.PrimaryEmpty = 0
+	end
+	if self.ReserveEmpty then
+		if self:GetNWString("dw_state") == "combined" and self:Ammo2() > 0 then
+			self.Owner:SetAmmo( 1, "Tesla Bulbs" )
+			if !self.PrimaryEmpty then
+				self:SetClip1( self.OldClip1 )
 			end
-			self.PrimaryEmpty1 = 0
+		else
 			self.Owner:SetAmmo( 0, "Tesla Bulbs" )
 		end
 	end
-	
 end
 
 -- Nzombies stuff
@@ -547,6 +544,8 @@ function SWEP:NZMaxAmmo()
 		self.Owner:SetAmmo( self.Primary.MaxAmmo, ammo_type )
 		self.Owner:SetAmmo( self.Secondary.MaxAmmo, ammo_type2 )
 	end
+	self.PrimaryEmpty = false
+	self.ReserveEmpty = false
 end
 
 function SWEP:PreDrawViewModel( vm )
@@ -568,6 +567,7 @@ function SWEP:OnPaP()
 	self.Secondary.ClipSize = 4
 	self.Secondary.DefaultClip = 28
 	self.Secondary.MaxAmmo = 24
+	self.OldClip1 = 24
 	self:SetClip2(4)
 	self:ClearStatCache()
 	return true
