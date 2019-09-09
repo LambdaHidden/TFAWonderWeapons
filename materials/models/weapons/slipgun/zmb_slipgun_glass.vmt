@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/weapons/slipgun/zmb_slipgun_glass"
+	"$translucent" "1"
+}

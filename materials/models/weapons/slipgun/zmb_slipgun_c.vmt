@@ -1,0 +1,11 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/weapons/slipgun/zmb_slipgun_c"
+	"$bumpmap" "models/weapons/slipgun/zmb_slipgun_n"
+	"$phong" "1"
+	"$phongexponent" "64"
+	"$phongboost"	"4"
+	"$phongalbedoboost" 	"-1"
+	"$phongfresnelranges"	"[.03 .6 .9]"
+	"$normalmapalphaphongmask" "1"	
+}
